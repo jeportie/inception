@@ -7,7 +7,7 @@ services:
       args:
         - DOMAIN_NAME=${DOMAIN_NAME}
     ports:
-      - "8443:443"
+      - "443:443"
     volumes:
       - wordpress:/var/www/html
     networks:
@@ -25,7 +25,8 @@ services:
     networks:
       - inception
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     restart: always
 
   mariadb:
@@ -37,6 +38,21 @@ services:
     networks:
       - inception
     restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "--silent",
+          "-h127.0.0.1",
+          "-uroot",
+          "-p${MYSQL_ROOT_PASSWORD}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
 volumes:
   wordpress:

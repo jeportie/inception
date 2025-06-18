@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && \
-    apt-get install -y php php-fpm php-mysql curl wget sendmail tar
+    apt-get install -y php php-fpm php-mysql mariadb-client curl wget sendmail tar
 
 RUN mkdir -p /var/www/html
 RUN wget https://fr.wordpress.org/latest-fr_FR.tar.gz && tar -xzf latest-fr_FR.tar.gz --strip-components=1

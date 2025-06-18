@@ -2,6 +2,12 @@
 
 service php7.4-fpm start
 
+echo "[WP] Attente de MariaDB sur TCP…"
+until mysqladmin ping -hmariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent; do
+  echo "[WP] MariaDB non prête, j’attends 2 s…"
+  sleep 2
+done
+
 if [ ! -f /var/www/html/wp-config.php ]; then
     wget https://wordpress.org/latest.tar.gz
     tar xzvf latest.tar.gz --strip-components=1 -C /var/www/html
@@ -20,7 +26,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 
     sleep 5 # attendre MariaDB opérationnelle
     wp core install --path=/var/www/html \
-        --url="https://localhost:8443" \
+        --url="https://${DOMAIN_NAME}" \
         --title="Inception" \
         --admin_user="${WP_ADMIN_USER}" \
         --admin_password="${WP_ADMIN_PASSWORD}" \
