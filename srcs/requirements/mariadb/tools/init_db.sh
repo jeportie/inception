@@ -46,3 +46,4 @@ fi
 # 6) Démarrage final (foreground)
 echo "[MariaDB] Démarrage final en avant-plan…"
 exec mysqld_safe --datadir="$DATADIR" --bind-address=0.0.0.0
+

@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   nginx:
+    container_name: nginx
     build:
       context: ./requirements/nginx
       args:
         - DOMAIN_NAME=${DOMAIN_NAME}
     ports:
       - "443:443"
+      # - "80:80"
     volumes:
       - wordpress:/var/www/html
     networks:
@@ -17,6 +19,7 @@ services:
     restart: always
 
   wordpress:
+    container_name: wordpress
     build: ./requirements/wordpress
     volumes:
       - wordpress:/var/www/html
@@ -30,6 +33,7 @@ services:
     restart: always
 
   mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb
     volumes:
       - mariadb:/var/lib/mysql
