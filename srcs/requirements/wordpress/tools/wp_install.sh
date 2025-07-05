@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 service php7.4-fpm start
 
