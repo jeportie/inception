@@ -16,10 +16,10 @@ prepare:
 	mkdir -p ~/data/wordpress ~/data/mariadb
 
 up: prepare
-	docker compose -f srcs/docker-compose.yml up -d --build
+	docker-compose -f srcs/docker-compose.yml up -d --build
 
 down:
-	docker compose -f srcs/docker-compose.yml down
+	docker-compose -f srcs/docker-compose.yml down
 
 clean: down
 	docker system prune -af
