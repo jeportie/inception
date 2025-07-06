@@ -10,21 +10,36 @@
 #                                                                              #
 # **************************************************************************** #
 
-all: prepare up
+DCLOC = srcs/docker-compose.yml
+DC = docker compose -f $(DCLOC)
+ENV = srcs/.env
+
+all: prepare build up
 
 prepare:
 	mkdir -p ~/data/wordpress ~/data/mariadb
 
+build:
+	$(DC) --env-file $(ENV) build
+
 up: prepare
-	docker-compose -f srcs/docker-compose.yml up -d --build
+	$(DC) --env-file $(ENV) up -d
+	# docker compose -f srcs/docker-compose.yml up -d --build
 
 down:
-	docker-compose -f srcs/docker-compose.yml down
+	$(DC) --env-file $(ENV) down
+	# docker compose -f srcs/docker-compose.yml down
 
 clean: down
 	docker system prune -af
+	$(DC) --env-file $(ENV) down -v --rmi all --remove-orphans
 
 fclean: clean
 	sudo rm -rf ~/data/wordpress ~/data/mariadb
 
-re: fclean all
+logs:
+	$(DC) --env-file $(ENV) logs -f
+
+re: clean all
+
+.PHONY: all prepare up down clean fclean
