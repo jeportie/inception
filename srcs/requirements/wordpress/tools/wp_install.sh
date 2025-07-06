@@ -1,7 +1,7 @@
 #!/bin/bash
-set -e
+set -Eeuo pipefail
 
-mkdir -p /run/php
+# mkdir -p /run/php
 service php7.4-fpm start
 
 until mysqladmin ping -h mariadb -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent; do
