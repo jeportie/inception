@@ -27,15 +27,15 @@ if [ ! -f "$INSTALL_MARK" ]; then
 	done
 	
 	# 4) Configuration initiale (root via socket, puis set password)
-	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
-	  -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
-	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
-	  -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
-	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
-	  -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO '${SQL_USER}'@'%';"
-	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
-	  -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
-	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	mysql -u root -p"${MYSQL_ROOT_PASSWORD}" \
+	  -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+	mysql -u root -p"${MYSQL_ROOT_PASSWORD}" \
+	  -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+	mysql -u root -p"${MYSQL_ROOT_PASSWORD}" \
+	  -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';"
+	mysql -u root -p"${MYSQL_ROOT_PASSWORD}" \
+	  -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+	mysql -u root -p"${MYSQL_ROOT_PASSWORD}" \
 	  -e "FLUSH PRIVILEGES;"
 
 	
