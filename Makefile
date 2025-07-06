@@ -24,11 +24,9 @@ build:
 
 up: prepare
 	$(DC) --env-file $(ENV) up -d
-	# docker compose -f srcs/docker-compose.yml up -d --build
 
 down:
 	$(DC) --env-file $(ENV) down
-	# docker compose -f srcs/docker-compose.yml down
 
 clean: down
 	docker system prune -af
