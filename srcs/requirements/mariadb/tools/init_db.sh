@@ -27,14 +27,17 @@ if [ ! -f "$INSTALL_MARK" ]; then
 	done
 	
 	# 4) Configuration initiale (root via socket, puis set password)
-	echo "[MariaDB] Configuration initiale…"
-	mysql <<-EOSQL
-	  ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('${MYSQL_ROOT_PASSWORD}');
-	  CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
-	  CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-	  GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-	  FLUSH PRIVILEGES;
-	EOSQL
+	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	  -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
+	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	  -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
+	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	  -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO '${SQL_USER}'@'%';"
+	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	  -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
+	mysql -u root -p"${SQL_ROOT_PASSWORD}" \
+	  -e "FLUSH PRIVILEGES;"
+
 	
 	touch "$INSTALL_MARK"
 	
