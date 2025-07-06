@@ -42,4 +42,4 @@ logs:
 
 re: clean all
 
-.PHONY: all prepare up down clean fclean
+.PHONY: all prepare up down clean fclean logs re
