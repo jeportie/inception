@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 DCLOC = srcs/docker-compose.yml
-DC = docker compose -f $(DCLOC)
+DC = docker-compose -f $(DCLOC)
 ENV = srcs/.env
 
 all: prepare build up
