@@ -16,8 +16,11 @@ ENV = srcs/.env
 
 all: prepare build up
 
-prepare:
+prepare: fix-perms
 	mkdir -p ~/data/wordpress ~/data/mariadb
+
+fix-perms:
+	sudo chown -R 1000:1000 ~/data/wordpress ~/data/mariadb
 
 build:
 	$(DC) --env-file $(ENV) build
