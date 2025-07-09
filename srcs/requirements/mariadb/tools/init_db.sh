@@ -2,18 +2,18 @@
 set -Eeuo pipefail
 
 DATADIR=/var/lib/mysql
+INSTALL_MARK="$DATADIR/.installed"
 
 chown -R mysql:mysql "$DATADIR"
 
 # Si fichier existe, alors on saute prochaine etape.
-INSTALL_MARK="$DATADIR/.installed"
-
 if [ ! -f "$INSTALL_MARK" ]; then
 	echo "[MariaDB] Initialisation du répertoire de données…"
 	mysql_install_db --user=mysql --datadir="$DATADIR"
 
 	echo "[MariaDB] Démarrage temporaire de mariadbd…"
-	mysqld_safe --datadir="$DATADIR" --bind-address=0.0.0.0 &
+	# mysqld_safe --datadir="$DATADIR" --bind-address=0.0.0.0 &
+	su mysql -s /bin/bash -c "mysqld_safe --datadir=$DATADIR --bind-address=0.0.0.0" &
 	PID_TMP=$!
 	
 	echo "[MariaDB] En attente d’un ping socket…"
@@ -41,5 +41,6 @@ if [ ! -f "$INSTALL_MARK" ]; then
 fi
 
 echo "[MariaDB] Démarrage final en avant-plan…"
-exec mysqld_safe --datadir="$DATADIR" --bind-address=0.0.0.0
+exec su mysql -s /bin/bash -c "mysqld_safe --datadir=$DATADIR --bind-address=0.0.0.0"
+# exec mysqld_safe --datadir="$DATADIR" --bind-address=0.0.0.0
 
