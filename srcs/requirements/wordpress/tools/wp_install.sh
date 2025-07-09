@@ -34,6 +34,10 @@ if ! wp core is-installed; then
     --admin_password="${WP_ADMIN_PASSWORD}" \
     --admin_email="${WP_ADMIN_EMAIL}" \
     --skip-email
+
+# eviter les redirection infinit et la perte de session en forcant https
+  wp option update home "https://${DOMAIN_NAME}"
+  wp option update siteurl "https://${DOMAIN_NAME}"
 fi
 
 if ! wp user get "${WP_USER}"; then

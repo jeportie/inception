@@ -3,6 +3,7 @@
 services:
   nginx:
     container_name: nginx
+    user: nginxuser
     depends_on:
       wordpress:
         condition: service_healthy
@@ -21,6 +22,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    security_opt:
+      - no-new-privileges:true
+    # read_only: true
 
   wordpress:
     container_name: wordpress
@@ -50,7 +54,7 @@ services:
     env_file: .env
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent", "-h127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "--silent", "-hlocalhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
