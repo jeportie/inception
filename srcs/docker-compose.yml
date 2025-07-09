@@ -17,11 +17,6 @@ services:
     build: ./requirements/nginx
     env_file: .env
     restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     security_opt:
       - no-new-privileges:true
     # read_only: true
